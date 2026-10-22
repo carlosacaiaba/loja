@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle de Estoque - Gestão Prática</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <header class="menu-estoque">
+        <div class="logo-estoque"> EstoquePro</div>
+        <nav class="nav-estoque">
+            <button class="btn-nav" onclick="alternarTela('inicio')">Início</button>
+            <button class="btn-nav" onclick="alternarTela('cadastro')">Cadastrar Produto</button>
+            <button class="btn-nav" onclick="alternarTela('listagem')">Ver Estoque</button>
+        </nav>
+    </header>
+
+    <main class="container-estoque">
+        <!-- Mensagens de Feedback Dinâmicas -->
+        <div id="mensagem" class="mensagem-alerta oculto-tela"></div>
+
+        <!-- Tela Inicial -->
+        <section id="tela-inicio" class="tela-secao">
+            <h1 class="titulo-principal">Painel de Controle de Estoque</h1>
+            <p class="texto-informativo">Gerencie as mercadorias, quantidades e valores da empresa em tempo real. Utilize as opções do menu superior para navegar.</p>
+            <div class="dashboard-cards">
+                <div class="card-informativo">
+                    <h3 class="card-titulo">Total de Itens em Estoque</h3>
+                    <p id="dash-total" class="card-numero">0</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tela de Cadastro / Alteração -->
+        <section id="tela-cadastro" class="tela-secao oculto-tela">
+            <h2 id="titulo-form" class="titulo-secao">Cadastrar Novo Produto</h2>
+            <form id="form-produto" onsubmit="salvarProduto(event)">
+                <!-- Input oculto fundamental para saber se estamos editando ou cadastrando um produto novo -->
+                <input type="hidden" id="produto-id">
+                
+                <div class="campo-formulario">
+                    <label class="label-formulario" for="nome">Nome do Produto:</label>
+                    <input class="input-formulario" type="text" id="nome" required placeholder="Ex: Monitor Gamer 24'">
+                </div>
+
+                <div class="linha-formulario">
+                    <div class="campo-formulario">
+                        <label class="label-formulario" for="quantidade">Quantidade:</label>
+                        <input class="input-formulario" type="number" id="quantidade" min="1" required placeholder="Ex: 50">
+                    </div>
+                    <div class="campo-formulario">
+                        <label class="label-formulario" for="preco">Preço Unitário (R$):</label>
+                        <input class="input-formulario" type="number" id="preco" step="0.01" min="0.01" required placeholder="Ex: 899.90">
+                    </div>
+                </div>
+
+                <div class="botoes-alinhamento">
+                    <button type="submit" class="btn-acao btn-sucesso">Salvar Produto</button>
+                    <button type="button" class="btn-acao btn-cancelar" onclick="limparFormulario(); alternarTela('listagem');">Cancelar</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Tela de Listagem e Pesquisa -->
+        <section id="tela-listagem" class="tela-secao oculto-tela">
+            <h2 class="titulo-secao">Produtos Registrados</h2>
+            
+            <!-- Barra de Pesquisa -->
+            <div class="container-pesquisa">
+                <input class="input-pesquisa" type="text" id="campo-pesquisa" placeholder="Pesquisar por nome do produto..." oninput="pesquisarProdutos()">
+            </div>
+
+            <div class="tabela-rolagem">
+                <table class="tabela-dados">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Produto</th>
+                            <th>Quantidade</th>
+                            <th>Preço Unitário</th>
+                            <th>Total em Estoque</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-corpo">
+                        <!-- Gerado dinamicamente via JavaScript -->
+                    </tbody>
+                </table>
+                <!-- Mensagem caso o estoque esteja vazio na busca ou no início -->
+                <p id="mensagem-vazio" style="display: none; color: gray; font-style: italic; text-align: center; margin-top: 15px;">Nenhum produto encontrado no estoque.</p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Script carregado após a renderização da interface -->
+    <script src="js/app.js"></script>
+</body>
+</html>
